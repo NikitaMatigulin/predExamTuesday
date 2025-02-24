@@ -1,9 +1,13 @@
-class UserValidator {
+class AuthValidator {
   static validateSignUp({ name, email, password }) {
-    if (!name || name.trim().length === 0 || typeof name !== "string") {
+    if (
+      !name ||
+      name.trim().length === 0 ||
+      typeof name !== "string"
+    ) {
       return {
         isValid: false,
-        error: "name is required and must non-empty string",
+        error: "Name is required and must non-empty string",
       };
     }
 
@@ -39,18 +43,45 @@ class UserValidator {
     };
   }
 
+  static validateSignIn({ email, password }) {
+    if (!email || email.trim().length === 0 || typeof email !== "string") {
+      return {
+        isValid: false,
+        error: "Email is required and must non-empty string.",
+      };
+    }
+
+    if (
+      !password ||
+      password.trim().length === 0 ||
+      typeof password !== "string"
+    ) {
+      return {
+        isValid: false,
+        error: "Password is required, must be a non-empty string.",
+      };
+    }
+
+    return {
+      isValid: true,
+      error: null,
+    };
+  }
+
   static validateEmail(email) {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailPattern.test(email);
   }
 
   static validatePassword(password) {
+    // Регулярные выражения для проверки требований к паролю
     const hasUpperCase = /[A-Z]/; // Проверка на наличие заглавной буквы
     const hasLowerCase = /[a-z]/; // Проверка на наличие строчной буквы
     const hasNumbers = /\d/; // Проверка на наличие цифры
     const hasSpecialCharacters = /[!@#$%^&*()-,.?":{}|<>]/; // Проверка на наличие спецсимвола
     const isValidLength = password.length >= 8; // Проверка на минимальную длину
 
+    // Проверка всех условий
     if (
       !hasUpperCase.test(password) ||
       !hasLowerCase.test(password) ||
@@ -65,4 +96,4 @@ class UserValidator {
   }
 }
 
-module.exports = UserValidator;
+module.exports = AuthValidator;
